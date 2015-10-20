@@ -1,0 +1,66 @@
+---
+layout: default
+---
+<svg width="720" height="120">
+  <g id="dataCircles"></g>
+</svg>
+
+<script>
+
+  // d3.text("data/textdata.txt", function(error,data) {
+  //  if (error) {
+  //    console.log(error.status, error.statusText);
+  //  }
+  //  else (
+  //  console.log(data);
+  // )
+  // });
+  d3.json("dataJson.json", function(error,data) {
+  if (error) {
+    console.log(error.status, error.statusText);
+    }
+  else {
+  //  console.log(data);
+  //  data.forEach(function(dataPoint){
+  //    dataPoint.x = parseFloat(dataPoint.x);
+  //    dataPoint.size = parseFloat(dataPoint.size);
+  //    });
+      draw(data);
+      console.log(data);
+  }
+  });
+
+  function draw(data) {
+
+    var circle = d3.select("g#dataCircles").selectAll("circle")
+    .data(data, function(d){
+      return d.color;
+    })
+
+    circle.enter().append("circle")
+      .attr("cy", 60)
+      .style("fill", function(d){
+        return d.color;
+      })
+      .attr("r", 0)
+
+    circle.transition().duration(1000)
+      .attr("r", function(dataPoint){
+      return dataPoint.radius;
+    })
+    .style("fill", function(d){
+      return d.color;
+    })
+    .attr("cx", function(d){
+      return d.x;
+    });
+
+    circle.exit().transition().duration(1000)
+      .attr("r", 0).remove();
+  }
+
+
+
+    console.log("first!");
+
+</script>

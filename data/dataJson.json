@@ -1,0 +1,5 @@
+[
+  {"size": 1, "color": "red", "x":23},
+  {"size": 2, "color": "blue", "x":45},
+  {"size": 42, "color": "yellow", "x":67},
+]
