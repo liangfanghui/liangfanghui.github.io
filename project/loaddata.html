@@ -7,10 +7,22 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 </head>
 
-<div class="chart">
-</div>
+<style>
+.chart div{
+  font: 10px sans-serif;
+  background-color: steelblue;
+  text-align: right;
+  padding: 3px;
+  margin: 1px;
+  color: white;
+}
+</style>
+
+<div class="chart"></div>
 
 <script>
+
+// var fourStar = 0;
 
 d3.csv("airbnbbeijing.csv", function (error, data) {
   if (error){
@@ -26,6 +38,28 @@ else {
 function draw(data) {
 
 }
+
+// data.forEach(function(d, i){
+//   var curRating = d.overall_satisfacation;
+//   if(curRating >= 4.0) {
+//     fourStar = fourStar + 1;
+//   });
+
+// var chart = d3.select(".chart");
+
+// var bar = chart.selectAll("div");
+
+// var barupdate = bar.data(fourStar);
+
+// var barEnter = barUpdate.enter().append("div");
+
+//   barEnter.style("width", function(d) {return d * 10 + "px"; })
+//           .text(function(d) {return d; });
+
+
+
+
+
 
 
 </script>
