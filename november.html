@@ -1,0 +1,107 @@
+---
+layout: default
+---
+
+<style>
+#controls {
+  background-color: cornflowerblue;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 200px
+}
+svg {
+  background-color: orange;
+  margin-left: 200px;
+}
+</style>
+
+<div id="controls">
+    <select id="year_dropdown"></select>
+</div>
+
+<svg width=500 height=500></svg>
+
+<script>
+
+var raw_data = [],
+    year = false;
+
+d3.csv("https://ashleyparis.github.io/data/Olympic.csv", function(error, data){
+
+  raw_data = data.filter(function(d){
+    return d.NOC === "SWE";
+  });
+// d means data point
+
+var years = [];
+raw_data.forEach(function(d){
+  d.year = parseFloat(d.Edition);
+  if (years.indexOf(d.year) == -1) {
+    years.push(d.year);
+  }
+});
+//-1=false 1=true
+  years.sort();
+  year = years[0];
+
+  d3.select("#year_dropdown").selectAll("option")
+    .data(years).enter().append("option")
+    .attr("value", function(d){
+      return d;
+    })
+    .text(function(d){
+      return d;
+    });
+
+  d3.select("#year_dropdown").on("change", function(){
+    year = years[this.selectedIndex];
+    draw();
+  });
+
+  draw();
+
+});
+
+  function draw(){
+    var year_data = raw_data.filter(function(d){
+      return d.year === year;
+    });
+
+    var scale = d3.scale.linear()
+    .domain([0, 100])
+    .range([20, 250]);
+
+    var data_array = [
+      {"medals": year_data.length, "country": "Sweden"}
+    ];
+
+    var circle = d3.select("svg").selectAll("circle")
+    .data(data_array);
+// also could write, like this ".data([{"medals": year_data.length, "country": "Sweden"}];)"
+
+    circle.enter().append("circle")
+      .attr("r", 0)
+      .attr("cx", 250)
+      .attr("cy", 250);
+
+    circle.transition().duration(500)
+      .attr("r", function(d){
+        return scale(d.medals);
+      });
+
+   circle.on("mouseover", function(d){
+     d3.select(this).attr("fill", "green");
+   })
+   .on("mouseout", function(d){
+     d3.select(this).attr("fill", "pink");
+   })
+   .on("click", function(d){
+     d3.select(this).attr("fill", "red");
+     console.log(d.country);
+   });
+
+
+  }
+
+</script>

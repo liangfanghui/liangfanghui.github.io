@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title> airbnb in beijing
+</title>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+
+<style>
+.chart div{
+  font: 10px sans-serif;
+  background-color: steelblue;
+  text-align: right;
+  padding: 5px;
+  margin: 5px;
+  color: white;
+}
+
+
+
+</style>
+
+
+<body>
+
+<svg width=0 height=0></svg>
+
+<div id="option">
+  <input name="allPrice"
+         type="button"
+         value="Price"
+         onclick="updateData()" />
+ <input name="OverallSatisfactionButton"
+          type="button"
+          value="Overall Satisfaction"
+          onclick="updateData2()" />
+</div>
+
+
+<div class="chart"></div>
+
+<script>
+    var raw_data = [];
+
+function updateData() {
+
+d3.csv("http://liangfanghui.github.io/project/airbnbbeijing.csv", function (error, data) {
+    prices = data.sort(function(a, b) {
+      return b.price - a.price
+    })
+
+      pricesOne = data.filter(function(d) {
+        return d.price <= 20;
+      });
+
+      pricesTwo = data.filter(function(d) {
+        return d.price > 20 && d.price <= 40;
+      });
+
+      pricesThree = data.filter(function(d){
+        return d.price > 40 && d.price <= 80;
+      });
+
+      pricesFour = data.filter(function(d){
+        return d.price > 80 && d.price <= 100;
+      });
+
+      pricesFive = data.filter(function(d){
+        return d.price > 100 && d.price <= 150;
+      });
+
+      pricesSix = data.filter(function(d){
+        return d.price > 150 && d.price <= 200;
+      });
+
+      pricesSeven = data.filter(function(d){
+        return d.price > 200;
+      });
+
+      var allPrice = [pricesOne.length, pricesTwo.length, pricesThree.length, pricesFour.length, pricesFive.length, pricesSix.length, pricesSeven.length];
+
+
+      var x = d3.scale.linear()
+          .domain([0, d3.max(allPrice)])
+          .range([0, 1000]);
+
+          d3.select(".chart")
+          .selectAll("div")
+          .data(allPrice)
+          .enter().append("div")
+          .style("width", function(d) { return x(d) + "px"; })
+          .text(function(d) { return d; })
+          .on("click", function (d) {
+            return d.allPrice
+          });
+
+  });
+
+}
+
+  // function draw(length){
+  //   console.log(length);
+  //   var scale = d3.scale.linear()
+  //   .domain([0, 100])
+  //   .range([0, 250]);
+  //
+  //   // year_data.length = pricesOne;
+  //
+  //   var data_array = [
+  //     {"price": length}
+  //   ];
+  //
+  //   var barchart = d3.select(".chart").selectAll("div")
+  //   .data(data_array)
+  //   .enter()
+  //   .append("div")
+  //   .style("width", function(d){
+  //       return
+  //   };
+  //
+  //
+  // };
+function updateData2() {
+
+  d3.csv("http://liangfanghui.github.io/project/airbnbbeijing.csv", function (error, data) {
+      OverallSatisfaction = data.sort(function(a, b) {
+        return b.overall_satisfaction - a.overall_satisfaction
+      });
+
+      OverallSatisfaction1 = data.filter(function(d) {
+        return d.overall_satisfaction <= 2;
+      });
+
+      OverallSatisfaction2 = data.filter(function(d) {
+        return d.overall_satisfaction > 2 && d.overall_satisfaction <= 3;
+      });
+
+      OverallSatisfaction3 = data.filter(function(d) {
+        return d.overall_satisfaction > 3 && d.overall_satisfaction <= 4;
+      });
+
+      OverallSatisfaction4 = data.filter(function(d) {
+        return d.overall_satisfaction > 4 && d.overall_satisfaction <= 5;
+      });
+
+      var allSatisfaction = [OverallSatisfaction1.length, OverallSatisfaction2.length, OverallSatisfaction3.length, OverallSatisfaction4.length];
+
+      var x = d3.scale.linear()
+          .domain([0, d3.max(allSatisfaction)])
+          .range([0, 1000]);
+
+
+      d3.select(".chart")
+        .selectAll("div")
+        .data(allSatisfaction)
+        .enter().append("div")
+        .style("width", function(d) { return x(d) + "px"; })
+        .text(function(d) { return d; })
+        .on("click", function (d) {
+            return d.allSatisfaction
+        });
+
+     });
+
+
+}
+
+</script>
+</body>
+</html>
