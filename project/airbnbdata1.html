@@ -4,25 +4,23 @@
 <meta charset="utf-8">
 <title> airbnb in beijing
 </title>
+<link rel="stylesheet" href="/project/main.css" />
 <script src="http://d3js.org/d3.v3.min.js"></script>
 </head>
 
 <style>
 .chart div{
   font: 10px sans-serif;
-  background-color: steelblue;
+  background-color: white;
   text-align: right;
   padding: 5px;
   margin: 5px;
-  color: white;
+  color: #202020;
 }
-
-
-
 </style>
 
 
-<body>
+<body bgcolor="#202020">
 
 <svg width=0 height=0></svg>
 
@@ -43,6 +41,27 @@
 <script>
     var raw_data = [];
 
+function draw(data){
+  var x = d3.scale.linear()
+      .domain([0, d3.max(data)])
+      .range([0, 1000]);
+
+      var y = d3.select(".chart")
+        .selectAll("div")
+        .data(data)
+
+      y.enter().append("div");
+
+      y.style("width", function(d) { return x(d) + "px"; })
+        .text(function(d) { return d; })
+        .on("click", function (d) {
+          console.log(d);
+      });
+
+
+     y.exit().remove();
+
+}
 function updateData() {
 
 d3.csv("http://liangfanghui.github.io/project/airbnbbeijing.csv", function (error, data) {
@@ -80,20 +99,8 @@ d3.csv("http://liangfanghui.github.io/project/airbnbbeijing.csv", function (erro
 
       var allPrice = [pricesOne.length, pricesTwo.length, pricesThree.length, pricesFour.length, pricesFive.length, pricesSix.length, pricesSeven.length];
 
+   draw(allPrice);
 
-      var x = d3.scale.linear()
-          .domain([0, d3.max(allPrice)])
-          .range([0, 1000]);
-
-          d3.select(".chart")
-          .selectAll("div")
-          .data(allPrice)
-          .enter().append("div")
-          .style("width", function(d) { return x(d) + "px"; })
-          .text(function(d) { return d; })
-          .on("click", function (d) {
-            return d.allPrice
-          });
 
   });
 
@@ -146,20 +153,7 @@ function updateData2() {
 
       var allSatisfaction = [OverallSatisfaction1.length, OverallSatisfaction2.length, OverallSatisfaction3.length, OverallSatisfaction4.length];
 
-      var x = d3.scale.linear()
-          .domain([0, d3.max(allSatisfaction)])
-          .range([0, 1000]);
-
-
-      d3.select(".chart")
-        .selectAll("div")
-        .data(allSatisfaction)
-        .enter().append("div")
-        .style("width", function(d) { return x(d) + "px"; })
-        .text(function(d) { return d; })
-        .on("click", function (d) {
-            return d.allSatisfaction
-        });
+    draw(allSatisfaction);
 
      });
 
