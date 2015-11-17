@@ -5,24 +5,34 @@
 <title> airbnb in beijing
 </title>
 <link rel="stylesheet" href="/project/main.css" />
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 </head>
 
-<style>
-.chart div{
-  font: 10px sans-serif;
-  background-color: white;
-  text-align: right;
-  padding: 5px;
-  margin: 5px;
-  color: #202020;
-}
-</style>
-
-
 <body bgcolor="#202020">
 
-<svg width=0 height=0></svg>
+  <style="position:relative">
+
+    <img src="logo.svg" width="100%" style="position:relative;" />
+
+  </style>
+
+<img src="img/downarrow.svg" style="position:absolute; top:600px; left:520px;" />
+
+<script type="text/javascript">
+
+var arrowdown = d3.select("img").selectAll("svg")
+    arrowdown.on("mouseover", function(d){
+      d3.select(this).attr("fill", "green");
+    })
+    .on("mouseout", function(d){
+      d3.select(this).attr("fill", "pink");
+    })
+    .on("click", function(d){
+      d3.select(this).attr("fill", "red");
+    });
+
+</script>
 
 <div id="option">
   <input name="allPrice"
@@ -38,8 +48,9 @@
 
 <div class="chart"></div>
 
-<script>
-    var raw_data = [];
+<script type="text/javascript" >
+
+var raw_data = [];
 
 function draw(data){
   var x = d3.scale.linear()
