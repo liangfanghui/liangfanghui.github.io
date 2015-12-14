@@ -6,13 +6,50 @@
 </title>
 <link rel="stylesheet" href="/project/main.css" />
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.js"></script>
+<script src="http://d3js.org/d3.v3.js"></script>
 </head>
 
 <body bgcolor="#202020">
 
+<style>
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: auto;
+  position: relative;
+}
+
+text {
+  font: 10px sans-serif;
+}
+
+.axis path {
+  display: none;
+}
+
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.group-label {
+  font-weight: bold;
+  text-anchor: end;
+}
+
+form {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+
+</style>
+
   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-  	 width="1224px" height="755.276px" viewBox="0 34.303 1224 755.276" enable-background="new 0 34.303 1224 755.276"
+  	 width="100%" height="100%" viewBox="0 34.303 1224 755.276" enable-background="new 0 34.303 1224 755.276"
   	 xml:space="preserve">
   <path fill="#414042" d="M336.013,586.287h3.9v-18.205c-0.96,0.365-2.36,0.465-3.9,0.434V586.287z M415.765,643.933h1.303
   	c-0.492-0.482,0.004-0.186-0.867-0.434v-0.436h1.3v-18.203h-4.335v19.504c0.867-0.287,1.731-0.576,2.601-0.865L415.765,643.933
@@ -3302,7 +3339,7 @@
   		c2.342-0.727,4.215-1.475,5.604-2.229v-10.934h-12.067v-13.686h26.328V528.822L1051.354,528.822z"/>
   </g>
   <g>
-  	<path fill="#BCBCBC" d="M595.023,715.771c8.184-7.607,15.887-14.826,23.664-21.977c4.562-4.193,8.658-4.141,13.188-0.002
+  	<path id="arrow" class= "arrowdown" fill="#BCBCBC" d="M595.023,715.771c8.184-7.607,15.887-14.826,23.664-21.977c4.562-4.193,8.658-4.141,13.188-0.002
   		c4.65,4.248,4.694,7.74,0.033,12.035c-9.985,9.199-19.99,18.383-30.029,27.533c-4.729,4.312-9.141,4.266-13.932-0.111
   		c-10.027-9.162-20.039-18.338-30.023-27.539c-4.516-4.162-4.489-7.582-0.047-11.732c4.568-4.271,8.688-4.445,13.179-0.352
   		C578.879,700.763,586.607,707.986,595.023,715.771z"/>
@@ -3311,7 +3348,7 @@
 
 <script type="text/javascript">
 
-var arrowdown = d3.select("svg").selectAll("path")
+var arrowdown = d3.select("#arrow")
     arrowdown.on("mouseover", function(d){
       d3.select(this).attr("fill", "grey");
     })
@@ -3320,23 +3357,28 @@ var arrowdown = d3.select("svg").selectAll("path")
     })
     .on("click", function(d){
       d3.select(this).attr("fill", "white");
+      console.log(window.innerHeight)
+      window.scrollTo(0,window.innerHeight)
     });
 
 </script>
 
+<div class="fullscreen">
+
 <div id="option">
   <input name="allPrice"
          type="button"
-         value="Price"
+         value="PRICE"
          onclick="updateData()" />
  <input name="OverallSatisfactionButton"
           type="button"
-          value="Overall Satisfaction"
+          value="OVERALL SATISFACTION"
           onclick="updateData2()" />
 </div>
 
 
 <div class="chart"></div>
+
 
 <script type="text/javascript" >
 
@@ -3344,25 +3386,29 @@ var raw_data = [];
 
 function draw(data){
   var x = d3.scale.linear()
-      .domain([0, d3.max(data)])
+      .domain([0, d3.max(data, function(d){
+        return d.length;
+      })])
       .range([0, 1000]);
 
-      var y = d3.select(".chart")
+      var bar = d3.select(".chart")
         .selectAll("div")
         .data(data)
 
-      y.enter().append("div");
+      bar.enter().append("div");
 
-      y.style("width", function(d) { return x(d) + "px"; })
-        .text(function(d) { return d; })
+      bar.style("width", function(d) { return x(d.length) + "px"; })
+        .text(function(d) { return d.text; })
         .on("click", function (d) {
           console.log(d);
       });
 
-
-     y.exit().remove();
+     bar.exit().remove();
 
 }
+
+
+var prices = [];
 function updateData() {
 
 d3.csv("http://liangfanghui.github.io/project/airbnbbeijing.csv", function (error, data) {
@@ -3370,65 +3416,81 @@ d3.csv("http://liangfanghui.github.io/project/airbnbbeijing.csv", function (erro
       return b.price - a.price
     })
 
+    // console.log(prices);
+
       pricesOne = data.filter(function(d) {
         return d.price <= 20;
       });
 
+      pricesOne = {
+        "length": pricesOne.length,
+        "text": "< $21"
+      }
+
       pricesTwo = data.filter(function(d) {
-        return d.price > 20 && d.price <= 40;
+        return d.price > 20 && d.price <= 30;
       });
+
+      pricesTwo = {
+        "length": pricesTwo.length,
+        "text": "$21 ~ $30"
+      }
 
       pricesThree = data.filter(function(d){
-        return d.price > 40 && d.price <= 80;
+        return d.price > 30 && d.price <= 40;
       });
+
+      pricesThree = {
+        "length": pricesThree.length,
+        "text": "$31 ~ $40"
+      }
 
       pricesFour = data.filter(function(d){
-        return d.price > 80 && d.price <= 100;
+        return d.price > 40 && d.price <= 50;
       });
+
+      pricesFour = {
+        "length": pricesFour.length,
+        "text": "$41 ~ $50"
+      }
 
       pricesFive = data.filter(function(d){
-        return d.price > 100 && d.price <= 150;
+        return d.price > 50 && d.price <= 70;
       });
+
+      pricesFive = {
+        "length": pricesFive.length,
+        "text": "$51 ~ $70"
+      }
 
       pricesSix = data.filter(function(d){
-        return d.price > 150 && d.price <= 200;
+        return d.price > 70 && d.price <= 100;
       });
+
+      pricesSix = {
+        "length": pricesSix.length,
+        "text": "$71 ~ $100"
+      }
 
       pricesSeven = data.filter(function(d){
-        return d.price > 200;
+        return d.price > 100;
       });
 
-      var allPrice = [pricesOne.length, pricesTwo.length, pricesThree.length, pricesFour.length, pricesFive.length, pricesSix.length, pricesSeven.length];
+      pricesSeven = {
+        "length": pricesSeven.length,
+        "text": "> $101"
+      }
+
+      var allPrice = [pricesOne, pricesTwo, pricesThree, pricesFour, pricesFive, pricesSix, pricesSeven];
 
    draw(allPrice);
+   drawPoints(allPrice);
 
 
   });
 
 }
 
-  // function draw(length){
-  //   console.log(length);
-  //   var scale = d3.scale.linear()
-  //   .domain([0, 100])
-  //   .range([0, 250]);
-  //
-  //   // year_data.length = pricesOne;
-  //
-  //   var data_array = [
-  //     {"price": length}
-  //   ];
-  //
-  //   var barchart = d3.select(".chart").selectAll("div")
-  //   .data(data_array)
-  //   .enter()
-  //   .append("div")
-  //   .style("width", function(d){
-  //       return
-  //   };
-  //
-  //
-  // };
 function updateData2() {
 
   d3.csv("http://liangfanghui.github.io/project/airbnbbeijing.csv", function (error, data) {
@@ -3437,22 +3499,60 @@ function updateData2() {
       });
 
       OverallSatisfaction1 = data.filter(function(d) {
-        return d.overall_satisfaction <= 2;
-      });
-
-      OverallSatisfaction2 = data.filter(function(d) {
-        return d.overall_satisfaction > 2 && d.overall_satisfaction <= 3;
-      });
-
-      OverallSatisfaction3 = data.filter(function(d) {
-        return d.overall_satisfaction > 3 && d.overall_satisfaction <= 4;
-      });
-
-      OverallSatisfaction4 = data.filter(function(d) {
         return d.overall_satisfaction > 4 && d.overall_satisfaction <= 5;
       });
 
-      var allSatisfaction = [OverallSatisfaction1.length, OverallSatisfaction2.length, OverallSatisfaction3.length, OverallSatisfaction4.length];
+      OverallSatisfaction1 = {
+        "length": OverallSatisfaction1.length,
+        "text": "★★★★★"
+      }
+
+      OverallSatisfaction2 = data.filter(function(d) {
+        return d.overall_satisfaction > 3 && d.overall_satisfaction <= 4;
+      });
+
+      OverallSatisfaction2 = {
+        "length": OverallSatisfaction2.length,
+        "text": "★★★★"
+      }
+
+      OverallSatisfaction3 = data.filter(function(d) {
+        return d.overall_satisfaction > 2 && d.overall_satisfaction <= 3;
+      });
+
+      OverallSatisfaction3 = {
+        "length": OverallSatisfaction3.length,
+        "text": "★★★"
+      }
+
+      OverallSatisfaction4 = data.filter(function(d) {
+        return d.overall_satisfaction > 1 && d.overall_satisfaction <= 2;
+      });
+
+      OverallSatisfaction4 = {
+        "length": OverallSatisfaction4.length,
+        "text": "★★"
+      }
+
+      OverallSatisfaction5 = data.filter(function(d) {
+        return d.overall_satisfaction >0 && d.overall_satisfaction <= 1;
+      });
+
+      OverallSatisfaction5 = {
+        "length": OverallSatisfaction5.length,
+        "text": "★"
+      }
+
+      OverallSatisfaction6 = data.filter(function(d) {
+        return d.overall_satisfaction == 0;
+      });
+
+      OverallSatisfaction6 = {
+        "length": OverallSatisfaction6.length,
+        "text": "Not Rate"
+      }
+
+      var allSatisfaction = [OverallSatisfaction1, OverallSatisfaction2, OverallSatisfaction3, OverallSatisfaction4, OverallSatisfaction5, OverallSatisfaction6];
 
     draw(allSatisfaction);
 
@@ -3460,7 +3560,541 @@ function updateData2() {
 
 
 }
+</script>
 
+<!--Second arrow-->
+<svg class="arrow2" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="7%" height="7%" viewBox="7 833.447 88.5 55.814" enable-background="new 7 833.447 88.5 55.814"
+	 xml:space="preserve">
+<g>
+	<path id="secondarrow" fill="#BCBCBC" d="M50.555,862.95c8.184-7.607,15.887-14.826,23.664-21.977c4.562-4.193,8.658-4.141,13.188-0.002
+		c4.65,4.248,4.694,7.74,0.033,12.035c-9.985,9.199-19.99,18.383-30.029,27.533c-4.729,4.312-9.141,4.266-13.932-0.111
+		c-10.027-9.162-20.039-18.338-30.023-27.539c-4.516-4.162-4.489-7.582-0.047-11.732c4.568-4.271,8.688-4.445,13.179-0.352
+		C34.41,847.942,42.139,855.165,50.555,862.95z"/>
+</g>
+</svg>
+
+</div>
+
+
+<script type="text/javascript">
+
+var arrowdown = d3.select("#secondarrow")
+    arrowdown.on("mouseover", function(d){
+      d3.select(this).attr("fill", "grey");
+    })
+    .on("mouseout", function(d){
+      d3.select(this).attr("fill", "pink");
+    })
+    .on("click", function(d){
+      d3.select(this).attr("fill", "white");
+      console.log(window.innerHeight)
+      window.scrollTo(0,window.innerHeight*2)
+    });
+
+</script>
+
+<div class="fullscreen">
+<!-- selectionbar -->
+<svg  width="100%" height="100%" viewBox="0 200 1224 600" >
+<text class="selectionbarText" transform="matrix(1 0 0 1 180.5005 228.6914)" fill="#FFFFFF" >Choose room type </text>
+<rect x="684.468" y="190.482" fill="#FFFFFF" stroke="#6D6E71" stroke-width="3" stroke-miterlimit="10" width="410.242" height="44.817"/>
+<text class="selectionbarText" transform="matrix(1 0 0 1 182.2935 322.8066)" fill="#FFFFFF" >Choose district </text>
+<rect x="684.652" y="284.597" fill="#FFFFFF" stroke="#6D6E71" stroke-width="3" stroke-miterlimit="10" width="410.246" height="44.818"/>
+<text class="selectionbarText" transform="matrix(1 0 0 1 178.7104 410.6484)" fill="#FFFFFF" >How many bedrooms </text>
+<rect x="684.955" y="372.439" fill="#FFFFFF" stroke="#6D6E71" stroke-width="3" stroke-miterlimit="10" width="410.248" height="44.818"/>
+<text class="selectionbarText" transform="matrix(1 0 0 1 177.8149 507.4531)" fill="#FFFFFF" >How many bathrooms </text>
+<rect x="685.475" y="469.243" fill="#FFFFFF" stroke="#6D6E71" stroke-width="3" stroke-miterlimit="10" width="410.241" height="44.818"/>
+<rect x="731.372" y="198.688" fill="none" width="312.822" height="51.089"/>
+<text id="selectedRoomType" class="selectionbarText" transform="matrix(1 0 0 1 755.792 225.4702)" >Entired house/apt</text>
+<rect x="731.872" y="292.188" fill="none" width="312.822" height="51.089"/>
+<text id="selectedDistrict" class="selectionbarText" transform="matrix(1 0 0 1 810.292 318.9702)" >Downtown</text>
+<rect x="744.289" y="380.393" fill="none" width="287.722" height="51.089"/>
+<text id="selectedNumofBed" class="selectionbarText" transform="matrix(1 0 0 1 880.4053 407.1738)" >0</text>
+<rect x="745.187" y="477.438" fill="none" width="287.723" height="51.092"/>
+<text id="selectedNumofBath" class="selectionbarText" transform="matrix(1 0 0 1 881.3027 504.2207)" >0</text>
+<polygon id="rightButton1" fill="#202020" points="1060.668,203.834 1060.668,223.167 1075.668,214.167 "/>
+<polygon id="rightButton2" fill="#202020" points="1060.334,297.501 1060.334,316.834 1075.334,307.834 "/>
+<polygon id="rightButton3" fill="#202020" points="1060.668,385.334 1060.668,404.667 1075.668,395.666 "/>
+<polygon id="rightButton4" fill="#202020" points="1060.396,483.938 1060.396,503.272 1075.396,494.272 "/>
+<polygon id="leftButton1" fill="#202020" points="713.842,203.834 713.842,223.167 698.842,214.167 "/>
+<polygon id="leftButton2" fill="#202020" points="714.176,297.501 714.176,316.834 699.176,307.834 "/>
+<polygon id="leftButton3" fill="#202020" points="713.842,385.334 713.842,404.667 698.842,395.666 "/>
+<polygon id="leftButton4" fill="#202020" points="714.113,483.938 714.113,503.272 699.113,494.272 "/>
+</svg>
+
+<script>
+//select drop down
+//The current Selected Room Type Index
+var curRoomType = 0;
+
+var chooseRoomType = ["Entire home/apt", "Private room"];
+var curDistrict = 0;
+var chooseDistrict = ["Downtown", "Fangshan", "Daxing", "Tongzhou", "Mentougou", "Changping","Shunyi",
+                      "Pinggu", "Yanqing", "Huairou", "Miyun"];
+var curNumOfBed = 0;
+var numberofBedroom = ["0","1","2","3","4+"];
+var curNumOfBath = 0;
+var numberofBathroom = ["0","1","2","3","4+"];
+
+var chooseRoomTypeRight = d3.select("#rightButton1")
+              .on("mouseover", function(d){
+                  d3.select(this).attr("fill", "black");
+                })
+              .on("mouseout", function(d){
+                 d3.select(this).attr("fill", "black");
+                })
+              .on("click", function(d){
+                d3.select(this).attr("fill", "#f15d62");
+                //if the curRoomType index is less then chooseRoomType (2 - 1)
+                if(curRoomType < chooseRoomType.length-1) {
+                  //add index to room
+                  curRoomType = curRoomType + 1;
+                  console.log("RoomType Add" + curRoomType);
+                } else { console.log("No");}
+                  //Select the text svg -> overwrite text as the chooseRoomType[curRoomType];
+                  //chooseRoomType[0] = "Entired house/apt"
+                  //chooseRoomType[1] = 'Private Room'
+                  d3.select("#selectedRoomType").text(chooseRoomType[curRoomType]);
+                   updatepie()
+                  // updatemap()
+              });
+
+var chooseRoomTypeRight = d3.select("#leftButton1")
+              .on("mouseover", function(d){
+                d3.select(this).attr("fill", "black");
+                })
+              .on("mouseout", function(d){
+                d3.select(this).attr("fill", "black");
+                })
+              .on("click", function(d){
+                d3.select(this).attr("fill", "#f15d62");
+              if(curRoomType > 0) {
+                curRoomType = curRoomType - 1;
+                console.log("RoomType Add" + curRoomType);
+                } else { console.log("No");}
+                d3.select("#selectedRoomType").text(chooseRoomType[curRoomType]);
+                updatepie()
+                // updatemap()
+                });
+
+var chooseDistrictRight = d3.select("#rightButton2")
+              .on("mouseover", function(d){
+                  d3.select(this).attr("fill", "black");
+                })
+              .on("mouseout", function(d){
+                 d3.select(this).attr("fill", "black");
+                })
+              .on("click", function(d){
+                d3.select(this).attr("fill", "#f15d62");
+                if(curDistrict < chooseDistrict.length-1) {
+                  curDistrict = curDistrict + 1;
+                  console.log("District Add" + curDistrict);
+                } else { console.log("No");}
+                  d3.select("#selectedDistrict").text(chooseDistrict[curDistrict]);
+                  updatepie()
+                  // updatemap()
+              });
+
+var chooseDistrictRight = d3.select("#leftButton2")
+              .on("mouseover", function(d){
+                  d3.select(this).attr("fill", "black");
+                })
+              .on("mouseout", function(d){
+                 d3.select(this).attr("fill", "black");
+                })
+              .on("click", function(d){
+                d3.select(this).attr("fill", "#f15d62");
+                if(curDistrict > 0) {
+                  curDistrict = curDistrict - 1;
+                  console.log("District Add" + curDistrict);
+                } else { console.log("No");}
+                  d3.select("#selectedDistrict").text(chooseDistrict[curDistrict]);
+                  updatepie()
+                  // updatemap()
+              });
+
+var NumOfBedRight = d3.select("#rightButton3")
+              .on("mouseover", function(d){
+                  d3.select(this).attr("fill", "black");
+                })
+              .on("mouseout", function(d){
+                 d3.select(this).attr("fill", "black");
+                })
+              .on("click", function(d){
+                d3.select(this).attr("fill", "#f15d62");
+                if(curNumOfBed < numberofBedroom.length-1) {
+                  curNumOfBed = curNumOfBed + 1;
+                  console.log("NumofBedroom Add" + curNumOfBed);
+                } else { console.log("No");}
+                  d3.select("#selectedNumofBed").text(numberofBedroom[curNumOfBed]);
+                  updatepie()
+                  // updatemap()
+              });
+
+var NumOfBedRight = d3.select("#leftButton3")
+              .on("mouseover", function(d){
+                  d3.select(this).attr("fill", "black");
+                })
+              .on("mouseout", function(d){
+                 d3.select(this).attr("fill", "black");
+                })
+              .on("click", function(d){
+                d3.select(this).attr("fill", "#f15d62");
+                if(curNumOfBed > 0) {
+                  curNumOfBed = curNumOfBed - 1;
+                  console.log("NumofBedroom Add" + curNumOfBed);
+                } else { console.log("No");}
+                  d3.select("#selectedNumofBed").text(numberofBedroom[curNumOfBed]);
+                  updatepie()
+                  // updatemap()
+              });
+
+
+var NumOfBathRight = d3.select("#rightButton4")
+              .on("mouseover", function(d){
+                  d3.select(this).attr("fill", "black");
+                })
+              .on("mouseout", function(d){
+                 d3.select(this).attr("fill", "black");
+                })
+              .on("click", function(d){
+                d3.select(this).attr("fill", "#f15d62");
+                if(curNumOfBath < numberofBathroom.length-1) {
+                  curNumOfBath = curNumOfBath + 1;
+                  console.log("NumofBathroom Add" + curNumOfBath);
+                } else { console.log("No");}
+                  d3.select("#selectedNumofBath").text(numberofBathroom[curNumOfBath]);
+                  updatepie()
+                  // updatemap()
+              });
+
+var NumOfBathRight = d3.select("#leftButton4")
+              .on("mouseover", function(d){
+                  d3.select(this).attr("fill", "black");
+                })
+              .on("mouseout", function(d){
+                 d3.select(this).attr("fill", "black");
+                })
+              .on("click", function(d){
+                d3.select(this).attr("fill", "#f15d62");
+                if(curNumOfBath > 0) {
+                  curNumOfBath = curNumOfBath - 1;
+                  console.log("NumofBathroom Add" + curNumOfBath);
+                } else { console.log("No");}
+                  d3.select("#selectedNumofBath").text(numberofBathroom[curNumOfBath]);
+                  updatepie()
+                  // updatemap()
+              });
+
+
+
+              //call current District
+
+
+
+
+// var curDistrict = 0;
+// var chooseDistrict = ["Downtown", "Fangshan", "Daxing", "Tongzhou", "Mentougou", "Changping","Shunyi",
+//                       "Pinggu", "Yanqing", "Huairou", "Miyun"];
+//
+//  chooseDistrict[3] = "Tongzhou"
+//  if(curDistrict === 3){
+//    d3.select("beijingmap.json", function(error, data){
+//
+//    })
+//  }
+
+
+
+
+              // //chooseDistrict[3] = "Tongzhou"
+              // if(curDistrict === 3){
+              //   d3.select(#Tongzhou).color();
+              // }
+// orignal data name should match with map data name
+// text replace text for selectionbar; create other text lines
+
+
+
+</script>
+
+<!--Third arrow-->
+<svg class="arrow3" width="7%" height="7%" viewBox="7 800 88.5 100">
+<g>
+	<path id="thirdarrow" fill="#BCBCBC" d="M50.555,862.95c8.184-7.607,15.887-14.826,23.664-21.977c4.562-4.193,8.658-4.141,13.188-0.002
+		c4.65,4.248,4.694,7.74,0.033,12.035c-9.985,9.199-19.99,18.383-30.029,27.533c-4.729,4.312-9.141,4.266-13.932-0.111
+		c-10.027-9.162-20.039-18.338-30.023-27.539c-4.516-4.162-4.489-7.582-0.047-11.732c4.568-4.271,8.688-4.445,13.179-0.352
+		C34.41,847.942,42.139,855.165,50.555,862.95z"/>
+</g>
+</svg>
+</div>
+
+<script type="text/javascript">
+
+var arrowdown = d3.select("#thirdarrow")
+    arrowdown.on("mouseover", function(d){
+      d3.select(this).attr("fill", "grey");
+    })
+    .on("mouseout", function(d){
+      d3.select(this).attr("fill", "pink");
+    })
+    .on("click", function(d){
+      d3.select(this).attr("fill", "white");
+      console.log(window.innerHeight)
+      window.scrollTo(0,window.innerHeight*3)
+    });
+
+</script>
+
+<!-- pie chart -->
+<div id="option">
+  <input name="DistrictPrices"
+         type="button"
+         value="PRICES"
+         onclick="updateData()" />
+ <input name="DistrictRate"
+          type="button"
+          value="OVERALL SATISFACTION"
+          onclick="updateData2()" />
+</div>
+
+
+<script>
+//Filter by bedrooms
+function bedRoomFilter(d){
+  if(curNumOfBed === 1){
+    return d.bedrooms === "1.0"
+  } else if (curNumOfBed === 2){
+    return d.bedrooms === "2.0"
+  } else if (curNumOfBed === 3){
+    return d.bedrooms === "3.0"
+  } else if (curNumOfBed === 4){
+    return d.bedrooms != "1.0" && d.bedrooms !="2.0" && d.bedrooms !="3.0" && d.bedrooms !="0.0" && d.bedrooms !=""
+  }
+};
+
+function bathRoomFilter(d){
+  if(curNumOfBath === 1){
+    return d.bathrooms === "1.0"
+  } else if (curNumOfBath === 2){
+    return d.bathrooms === "2.0"
+  } else if (curNumOfBath === 3){
+    return d.bathrooms === "3.0"
+  } else if (curNumOfBath === 4){
+    return d.bathrooms != "1.0" && d.bathrooms !="2.0" && d.bathrooms !="3.0" && d.bathrooms !="0.0" && d.bathrooms !=""
+  }
+};
+
+var myPieChartData
+function updatepie(){
+  // console.log(prices)
+  var myPieChartData =
+  prices.filter(function(d){
+    return d.room_type == chooseRoomType[curRoomType] &&
+           bedRoomFilter(d) && bathRoomFilter(d);
+          //  d.bathrooms == numberofBathroom[curNumOfBath]
+  })
+ console.log(piefilterdata)
+};
+
+
+
+
+// var width = 960,
+//     height = 500;
+//
+// var color = d3.scale.ordinal()
+//     .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+//
+// var pie = d3.layout.pie()
+//     .value(function(d) {
+//       return d.price;
+//     });
+//
+// data = pie(data);
+//
+//
+// var arc = d3.svg.arc()
+//     .innerRadius(150)
+//     .outerRadius(300)
+//
+// var slices = d3.select("svg").selectAll("path")
+//     .data(data);
+//
+//     slices.enter().append("path")
+//           .attr("transform", "translate(300, 300)")
+//           .style("fill", function(d){
+//             return d.data.color;
+//           })
+//           .attr("d", arc);
+//
+// d3.csv("http://liangfanghui.github.io/project/airbnbbeijing.csv", function (error, data) {
+//       prices = data.sort(function(a, b) {
+//         return b.price - a.price
+//         })
+//
+//      pricesOne = data.filter(function(d) {
+//         return d.price <= 20;
+//        });
+//
+//        pricesTwo = data.filter(function(d) {
+//          return d.price > 20 && d.price <= 30;
+//        });
+//
+//
+//        pricesThree = data.filter(function(d){
+//          return d.price > 30 && d.price <= 40;
+//        });
+//
+//
+//        pricesFour = data.filter(function(d){
+//          return d.price > 40 && d.price <= 50;
+//        });
+//
+//        pricesFive = data.filter(function(d){
+//          return d.price > 50 && d.price <= 70;
+//        });
+//
+//
+//        pricesSix = data.filter(function(d){
+//          return d.price > 70 && d.price <= 100;
+//        });
+//
+//
+//        pricesSeven = data.filter(function(d){
+//          return d.price > 100;
+//
+//
+//       var g = svg.selectAll(".arc")
+//                   .data(pie(data))
+//                   .enter().append("g")
+//                   .attr("class", "arc");
+//
+//           g.append("path")
+//             .attr("d", arc)
+//             .style("fill", function(d) { return color(d.data.price); });
+//
+//        });
+//
+// });
+
+
+</script>
+
+
+
+
+<!-- import BeiJing Map ???-->
+
+<script>
+//
+// function updatemap(){
+//   var filterdata = prices.filter(
+//   function(d){
+//     return d["room type"] == curRoomType && d["bedrooms"] == curNumOfBed && d["bathrooms"] == curNumOfBath
+//   }
+//   )
+//
+// map&pie
+//
+// }
+
+function drawPoints(data){
+  //Local
+  var pointsDataSet = [];
+
+  for(var x = 0; x < prices.length; x++ ) {
+    // pointsDataSet.push(prices[x].room_id,prices[x].price, prices[x].longtitude, prices[x].latitude);
+    var  points = {
+      id : prices[x].room_id,
+      price : prices[x].price,
+      coords : [prices[x].longitude, prices[x].latitude]
+    }
+    pointsDataSet.push(points);
+  }
+
+
+  console.log(pointsDataSet);
+  var points = [
+    {"name": "Downtown", "coords": [-71.0589, 42.3601]}
+  ];
+  // console.log(points.coords);
+  // console.log(globalProj(points.coords));
+  var points = svg.selectAll("circle")
+  .data(points, function(d){
+    return d.name;
+  });
+
+  points.enter().append("circle")
+  .attr("fill", "pink")
+  .attr("r", 20)
+  .attr("transform", function(d){
+    console.log(d.coords);
+    console.log(globalProj(d.coords));
+
+    return "translate(" + globalProj(d.coords) + ")";
+  });
+  // ["116.326946", "39.907458"]
+  // [479.9000135854168, 500.44108400657126]
+ }
+
+var width = 960,
+    height = 1000;
+
+var path = d3.geo.path()
+    .projection(null);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var globalProj;
+var globalPath;
+
+var featureCollection;
+  d3.json("beijingmap.json", function (error, data) {
+
+    console.log(data)
+
+     featureCollection = topojson.feature(data, data.objects.districts)
+console.log(featureCollection);
+    var center = d3.geo.centroid(featureCollection)
+    var scale  = 70;
+    var offset = [width/2, height/2];
+
+    var proj = d3.geo.mercator().scale(scale).center(center)
+           .translate(offset),
+        path = d3.geo.path().projection(proj);
+    globalPath = path;
+    globalProj = proj;
+    var bounds  = path.bounds(featureCollection);
+    var hscale  = scale*width  / (bounds[1][0] - bounds[0][0]);
+    var vscale  = scale*height / (bounds[1][1] - bounds[0][1]);
+    var scale   = (hscale < vscale) ? hscale : vscale;
+    var offset  = [width - (bounds[0][0] + bounds[1][0])/2,
+                      height - (bounds[0][1] + bounds[1][1])/2];
+
+    // new projection
+    proj = d3.geo.mercator().center(center)
+      .scale(scale).translate(offset);
+    path = path.projection(proj);
+
+    var paths = svg.selectAll("path")
+        .data(featureCollection.features, function(d){
+          return d.id;
+        });
+
+    paths.enter().append("path")
+      .attr("d", path).attr("fill", "white");
+
+  //   if (error) return console.error(error);
+  //
+  //   svg.append("path")
+  //      .datum(topojson)
+  //      .attr("d", path);
+
+  });
 </script>
 </body>
 </html>

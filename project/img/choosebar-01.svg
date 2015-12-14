@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="1224px" height="755.28px" viewBox="0 0 1224 755.28" enable-background="new 0 0 1224 755.28" xml:space="preserve">
+<text transform="matrix(1 0 0 1 180.5005 228.6914)" fill="#FFFFFF" font-family="'HelveticaNeueLTStd-BdCn'" font-size="37.6461">Choose room type </text>
+<rect x="684.468" y="190.482" fill="#FFFFFF" stroke="#6D6E71" stroke-width="3" stroke-miterlimit="10" width="410.242" height="44.817"/>
+<text transform="matrix(1 0 0 1 182.2935 322.8066)" fill="#FFFFFF" font-family="'HelveticaNeueLTStd-BdCn'" font-size="37.6461">Choose district </text>
+<rect x="684.652" y="284.597" fill="#FFFFFF" stroke="#6D6E71" stroke-width="3" stroke-miterlimit="10" width="410.246" height="44.818"/>
+<text transform="matrix(1 0 0 1 178.7104 410.6484)" fill="#FFFFFF" font-family="'HelveticaNeueLTStd-BdCn'" font-size="37.6461">How many bedrooms </text>
+<rect x="684.955" y="372.439" fill="#FFFFFF" stroke="#6D6E71" stroke-width="3" stroke-miterlimit="10" width="410.248" height="44.818"/>
+<text transform="matrix(1 0 0 1 177.8149 507.4531)" fill="#FFFFFF" font-family="'HelveticaNeueLTStd-BdCn'" font-size="37.6461">How many bathrooms </text>
+<rect x="685.475" y="469.243" fill="#FFFFFF" stroke="#6D6E71" stroke-width="3" stroke-miterlimit="10" width="410.241" height="44.818"/>
+<rect x="761.485" y="291.795" fill="none" width="287.724" height="51.088"/>
+<text transform="matrix(1 0 0 1 761.4854 318.5776)" font-family="'HelveticaNeueLTStd-BdCn'" font-size="32.2681">Chaoyang district</text>
+<rect x="763.372" y="197.688" fill="none" width="312.822" height="51.089"/>
+<text transform="matrix(1 0 0 1 763.3711 224.4702)" font-family="'HelveticaNeueLTStd-BdCn'" font-size="32.2681">Entired house/apt</text>
+<rect x="744.289" y="380.393" fill="none" width="287.722" height="51.089"/>
+<text transform="matrix(1 0 0 1 880.4053 407.1738)" font-family="'HelveticaNeueLTStd-BdCn'" font-size="32.2681">0</text>
+<rect x="745.187" y="477.438" fill="none" width="287.723" height="51.092"/>
+<text transform="matrix(1 0 0 1 881.3027 504.2207)" font-family="'HelveticaNeueLTStd-BdCn'" font-size="32.2681">0</text>
+<polygon fill="#202020" points="1060.668,203.834 1060.668,223.167 1075.668,214.167 "/>
+<polygon fill="#202020" points="1060.334,297.501 1060.334,316.834 1075.334,307.834 "/>
+<polygon fill="#202020" points="1060.668,385.334 1060.668,404.667 1075.668,395.666 "/>
+<polygon fill="#202020" points="1060.396,483.938 1060.396,503.272 1075.396,494.272 "/>
+<polygon fill="#202020" points="713.842,203.834 713.842,223.167 698.842,214.167 "/>
+<polygon fill="#202020" points="714.176,297.501 714.176,316.834 699.176,307.834 "/>
+<polygon fill="#202020" points="713.842,385.334 713.842,404.667 698.842,395.666 "/>
+<polygon fill="#202020" points="714.113,483.938 714.113,503.272 699.113,494.272 "/>
+</svg>
