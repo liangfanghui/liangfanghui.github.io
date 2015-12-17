@@ -3385,7 +3385,7 @@ form {
                      onclick="toggle_visibility('popupBoxTwoPosition');" />
             </div>
           </p>
-          <img src = "img/mapguide/map.svg" width="100%" />
+          <img src = "img/mapguide/map.svg" width="95%" />
           <!-- Click to switch tour.svg == popupBoxTwoPostion-->
           <!--Tour || Density-->
         </div>
@@ -3488,7 +3488,11 @@ function draw(data){
         .text(function(d) { return d.text; })
         .on("click", function (d) {
           console.log(d);
-      });
+      })
+				.style("background-color", function(d){
+					return d.color
+				});
+
 
      bar.exit().remove();
 
@@ -3511,7 +3515,9 @@ d3.csv("http://liangfanghui.github.io/project/airbnbbeijing.csv", function (erro
 
       pricesOne = {
         "length": pricesOne.length,
-        "text": "< $21"
+        "text": "< $21",
+				"color": "#55C6D9"
+
       }
 
       pricesTwo = data.filter(function(d) {
@@ -3520,7 +3526,8 @@ d3.csv("http://liangfanghui.github.io/project/airbnbbeijing.csv", function (erro
 
       pricesTwo = {
         "length": pricesTwo.length,
-        "text": "$21 ~ $30"
+        "text": "$21 ~ $30",
+			  "color": "#D5DE24"
       }
 
       pricesThree = data.filter(function(d){
@@ -3529,7 +3536,8 @@ d3.csv("http://liangfanghui.github.io/project/airbnbbeijing.csv", function (erro
 
       pricesThree = {
         "length": pricesThree.length,
-        "text": "$31 ~ $40"
+        "text": "$31 ~ $40",
+			  "color": "#BFAAD2"
       }
 
       pricesFour = data.filter(function(d){
@@ -3538,7 +3546,8 @@ d3.csv("http://liangfanghui.github.io/project/airbnbbeijing.csv", function (erro
 
       pricesFour = {
         "length": pricesFour.length,
-        "text": "$41 ~ $50"
+        "text": "$41 ~ $50",
+			  "color": "#FFDD17"
       }
 
       pricesFive = data.filter(function(d){
@@ -3547,7 +3556,8 @@ d3.csv("http://liangfanghui.github.io/project/airbnbbeijing.csv", function (erro
 
       pricesFive = {
         "length": pricesFive.length,
-        "text": "$51 ~ $70"
+        "text": "$51 ~ $70",
+			  "color": "#F79848"
       }
 
       pricesSix = data.filter(function(d){
@@ -3556,7 +3566,8 @@ d3.csv("http://liangfanghui.github.io/project/airbnbbeijing.csv", function (erro
 
       pricesSix = {
         "length": pricesSix.length,
-        "text": "$71 ~ $100"
+        "text": "$71 ~ $100",
+			  "color": "#F286B6"
       }
 
       pricesSeven = data.filter(function(d){
@@ -3565,7 +3576,8 @@ d3.csv("http://liangfanghui.github.io/project/airbnbbeijing.csv", function (erro
 
       pricesSeven = {
         "length": pricesSeven.length,
-        "text": "> $101"
+        "text": "> $101",
+			  "color": "#E77868"
       }
 
       var allPrice = [pricesOne, pricesTwo, pricesThree, pricesFour, pricesFive, pricesSix, pricesSeven];
@@ -3591,7 +3603,8 @@ function updateData2() {
 
       OverallSatisfaction1 = {
         "length": OverallSatisfaction1.length,
-        "text": "★★★★★"
+        "text": "★★★★★",
+				"color":"#B21F24"
       }
 
       OverallSatisfaction2 = data.filter(function(d) {
@@ -3600,7 +3613,8 @@ function updateData2() {
 
       OverallSatisfaction2 = {
         "length": OverallSatisfaction2.length,
-        "text": "★★★★"
+        "text": "★★★★",
+				"color":"#ED1C24"
       }
 
       OverallSatisfaction3 = data.filter(function(d) {
@@ -3609,7 +3623,8 @@ function updateData2() {
 
       OverallSatisfaction3 = {
         "length": OverallSatisfaction3.length,
-        "text": "★★★"
+        "text": "★★★",
+				"color":"#F05A3F"
       }
 
       OverallSatisfaction4 = data.filter(function(d) {
@@ -3618,7 +3633,8 @@ function updateData2() {
 
       OverallSatisfaction4 = {
         "length": OverallSatisfaction4.length,
-        "text": "★★"
+        "text": "★★",
+				"color":"#F48365"
       }
 
       OverallSatisfaction5 = data.filter(function(d) {
@@ -3627,7 +3643,8 @@ function updateData2() {
 
       OverallSatisfaction5 = {
         "length": OverallSatisfaction5.length,
-        "text": "★"
+        "text": "★",
+				"color":"#F8A98F"
       }
 
       OverallSatisfaction6 = data.filter(function(d) {
@@ -3636,7 +3653,8 @@ function updateData2() {
 
       OverallSatisfaction6 = {
         "length": OverallSatisfaction6.length,
-        "text": "Not Rate"
+        "text": "Not Rate",
+				"color":"#FCD2C0"
       }
 
       var allSatisfaction = [OverallSatisfaction1, OverallSatisfaction2, OverallSatisfaction3, OverallSatisfaction4, OverallSatisfaction5, OverallSatisfaction6];

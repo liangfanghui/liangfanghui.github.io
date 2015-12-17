@@ -46,14 +46,11 @@
 
 .chart div{
   font: 12px Gill Sans;
-  background-color: #F05B61;
+
   text-align: right;
   padding: 18px;
   margin: 10px;
-  color: white;
-}
-.chart:hover div{
-  color: white;
+  color: black;
 }
 
 .d3-tip {
