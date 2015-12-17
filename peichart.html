@@ -1,29 +1,33 @@
 ---
 layout: default
 ---
-
-<svg height=600 width=600></svg>
+<svg height=1000 width=600></svg>
+<svg id="piechart" height=600 width=600></svg>
 
 <script>
 
   var data = [
-    {"color": "red", "name": "Barry", "savings": 75},
-    {"color": "yellow", "name": "Harry", "savings": 25},
-    {"color": "green", "name": "Oliver", "savings": 1523.63}
+    {"length": 0, "text": "<21", "color": "#98abc5"},
+      {"length": 32, "text": "<31", "color": "#8a89a6"},
+        {"length": 15, "text": "<41", "color":"#7b6888"},
+          {"length": 7, "text": "<51", "color": "#6b486b"},
+            {"length": 9, "text": "<61", "color": "#a05d56"},
+              {"length": 20, "text": "<71", "color":  "#d0743c"},
   ];
 
   var pie = d3.layout.pie()
     .value(function(d){
-      return d.savings;
+      return d.length;
     });
 
   data = pie(data);
-
+  var outerRadius = 300;
+  var innerRadius = 150;
   var arc = d3.svg.arc()
     .innerRadius(150) //donuts chart change the number
     .outerRadius(300)
 
-  var slices = d3.select("svg").selectAll("path")
+  var slices = d3.select("#piechart").selectAll("path")
       .data(data);
 
   slices.enter().append("path")
@@ -34,6 +38,20 @@ layout: default
         .attr("d", arc);
 
 
+          var slices = d3.select("#piechart").selectAll("text").data(data);
+          slices.enter().append("text")
+          .attr("transform", function(d) { //set the label's origin to the center of the arc
+       //we have to make sure to set these before calling arc.centroid
+       d.outerRadius = outerRadius + 50; // Set Outer Coordinate
+       d.innerRadius = outerRadius + 45; // Set Inner Coordinate
+       return "translate(" + arc.centroid(d) + ")";
+     })
+     .attr("text-anchor", "middle") //center the text on it's origin
+     .style("fill", "Purple")
+     .style("font", "bold 12px Arial")
+     .text(function(d){
+            return d.data.length;
+          });
 //--------------------------------------------------------
 
   var airport_data = [

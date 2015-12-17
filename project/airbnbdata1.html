@@ -8,6 +8,19 @@
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="http://d3js.org/topojson.v1.js"></script>
 <script src="http://d3js.org/d3.v3.js"></script>
+
+<script type="text/javascript">
+
+			    function toggle_visibility(id) {
+			       var e = document.getElementById(id);
+			       if(e.style.display == 'block')
+			          e.style.display = 'none';
+			       else
+			          e.style.display = 'block';
+			    }
+
+</script>
+
 </head>
 
 <body bgcolor="#202020">
@@ -45,13 +58,20 @@ form {
   top: 10px;
 }
 
+#option{
+	margin-top: 30px;
+	margin-left: 20px;
+	margin-bottom: 30px;
+}
+
 
 </style>
+
 
   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
   	 width="100%" height="100%" viewBox="0 34.303 1224 755.276" enable-background="new 0 34.303 1224 755.276"
   	 xml:space="preserve">
-  <path fill="#414042" d="M336.013,586.287h3.9v-18.205c-0.96,0.365-2.36,0.465-3.9,0.434V586.287z M415.765,643.933h1.303
+  <path id="infomap" fill="#414042" d="M336.013,586.287h3.9v-18.205c-0.96,0.365-2.36,0.465-3.9,0.434V586.287z M415.765,643.933h1.303
   	c-0.492-0.482,0.004-0.186-0.867-0.434v-0.436h1.3v-18.203h-4.335v19.504c0.867-0.287,1.731-0.576,2.601-0.865L415.765,643.933
   	L415.765,643.933z M340.347,627.462v-18.637h-3.901c0.145,6.211,0.289,12.424,0.434,18.637H340.347z M417.499,648.267v-0.434h-0.868
   	C417.123,648.318,416.626,648.017,417.499,648.267z M422.699,437.185c-0.689-0.637-2.559-0.479-3.9-0.434
@@ -3346,17 +3366,84 @@ form {
   </g>
   </svg>
 
-<script type="text/javascript">
 
+  <body>
+
+    <div id="popupBoxOnePosition">
+      <div class="popupBoxWrapper">
+        <div class="popupBoxContent">
+          <p>
+<!-- toogle_visibility() == On_Off（） -->
+            <div id="infomapbutton">
+              <input name="back"
+                     type="button"
+                     value="BACK"
+                     onclick="toggle_visibility('popupBoxOnePosition');" />
+              <input name="infomapbutton"
+                     type="button"
+                     value="BEIJING ATTRACTIONS"
+                     onclick="toggle_visibility('popupBoxTwoPosition');" />
+            </div>
+          </p>
+          <img src = "img/mapguide/map.svg" width="100%" />
+          <!-- Click to switch tour.svg == popupBoxTwoPostion-->
+          <!--Tour || Density-->
+        </div>
+      </div>
+    </div>
+
+    <div id="popupBoxTwoPosition">
+      <div class="popupBoxWrapper">
+        <div class="popupBoxContent">
+          <p>
+              <input name="back2"
+                     type="button"
+                     value="BACK"
+                     onclick="toggle_visibility('popupBoxTwoPosition');" />
+          </p>
+
+          <img src = "img/mapguide/tour.svg" width="100%" />
+        </div>
+      </div>
+    </div>
+
+
+
+
+  </body>
+
+<!--All Click Events-->
+  <script type="text/javascript">
+
+  // var exitInfoMapClick = d3.select(".popupBoxWrapper")
+  //     exitInfoMapClick.on("click", function(d){
+  //       toggle_visibility('popupBoxOnePosition')
+  //     });
+
+  var infoMapClick = d3.select("#infomap")
+      infoMapClick.on("mouseover", function(d){
+        d3.select(this).attr("fill", "#F05B61");
+      })
+      .on("mouseout", function(d){
+        d3.select(this).attr("fill", "grey");
+      })
+      .on("click", function(d){
+        d3.select(this).attr("fill", "red");
+        toggle_visibility('popupBoxOnePosition')
+        displayPieChart();
+      });
+</script>
+
+  <script type="text/javascript">
 var arrowdown = d3.select("#arrow")
     arrowdown.on("mouseover", function(d){
-      d3.select(this).attr("fill", "grey");
+      d3.select(this).attr("fill", "#F05B61");
     })
     .on("mouseout", function(d){
-      d3.select(this).attr("fill", "pink");
+      d3.select(this).attr("fill", "grey");
     })
     .on("click", function(d){
-      d3.select(this).attr("fill", "white");
+      d3.select(this).attr("fill", "#F05B61");
       console.log(window.innerHeight)
       window.scrollTo(0,window.innerHeight)
     });
@@ -3581,22 +3668,23 @@ function updateData2() {
 
 var arrowdown = d3.select("#secondarrow")
     arrowdown.on("mouseover", function(d){
-      d3.select(this).attr("fill", "grey");
+      d3.select(this).attr("fill", "#F05B61");
     })
     .on("mouseout", function(d){
-      d3.select(this).attr("fill", "pink");
+      d3.select(this).attr("fill", "grey");
     })
     .on("click", function(d){
-      d3.select(this).attr("fill", "white");
+      d3.select(this).attr("fill", "#F05B61");
       console.log(window.innerHeight)
       window.scrollTo(0,window.innerHeight*2)
     });
 
 </script>
 
-<div class="fullscreen">
+
 <!-- selectionbar -->
-<svg  width="100%" height="100%" viewBox="0 200 1224 600" >
+<div class="selectionbar1">
+<svg  width="100%" height="100%" viewBox="0 180 1224 400" >
 <text class="selectionbarText" transform="matrix(1 0 0 1 180.5005 228.6914)" fill="#FFFFFF" >Choose room type </text>
 <rect x="684.468" y="190.482" fill="#FFFFFF" stroke="#6D6E71" stroke-width="3" stroke-miterlimit="10" width="410.242" height="44.817"/>
 <text class="selectionbarText" transform="matrix(1 0 0 1 182.2935 322.8066)" fill="#FFFFFF" >Choose district </text>
@@ -3606,13 +3694,13 @@ var arrowdown = d3.select("#secondarrow")
 <text class="selectionbarText" transform="matrix(1 0 0 1 177.8149 507.4531)" fill="#FFFFFF" >How many bathrooms </text>
 <rect x="685.475" y="469.243" fill="#FFFFFF" stroke="#6D6E71" stroke-width="3" stroke-miterlimit="10" width="410.241" height="44.818"/>
 <rect x="731.372" y="198.688" fill="none" width="312.822" height="51.089"/>
-<text id="selectedRoomType" class="selectionbarText" transform="matrix(1 0 0 1 755.792 225.4702)" >Entired house/apt</text>
+<text id="selectedRoomType" class="selectionbarText" transform="matrix(1 0 0 1 755.792 225.4702)" ></text>
 <rect x="731.872" y="292.188" fill="none" width="312.822" height="51.089"/>
-<text id="selectedDistrict" class="selectionbarText" transform="matrix(1 0 0 1 810.292 318.9702)" >Downtown</text>
+<text id="selectedDistrict" class="selectionbarText" transform="matrix(1 0 0 1 810.292 318.9702)" ></text>
 <rect x="744.289" y="380.393" fill="none" width="287.722" height="51.089"/>
-<text id="selectedNumofBed" class="selectionbarText" transform="matrix(1 0 0 1 880.4053 407.1738)" >0</text>
+<text id="selectedNumofBed" class="selectionbarText" transform="matrix(1 0 0 1 880.4053 407.1738)" ></text>
 <rect x="745.187" y="477.438" fill="none" width="287.723" height="51.092"/>
-<text id="selectedNumofBath" class="selectionbarText" transform="matrix(1 0 0 1 881.3027 504.2207)" >0</text>
+<text id="selectedNumofBath" class="selectionbarText" transform="matrix(1 0 0 1 881.3027 504.2207)" ></text>
 <polygon id="rightButton1" fill="#202020" points="1060.668,203.834 1060.668,223.167 1075.668,214.167 "/>
 <polygon id="rightButton2" fill="#202020" points="1060.334,297.501 1060.334,316.834 1075.334,307.834 "/>
 <polygon id="rightButton3" fill="#202020" points="1060.668,385.334 1060.668,404.667 1075.668,395.666 "/>
@@ -3626,12 +3714,11 @@ var arrowdown = d3.select("#secondarrow")
 <script>
 //select drop down
 //The current Selected Room Type Index
-var curRoomType = 0;
+var curRoomType = -1;
 
 var chooseRoomType = ["Entire home/apt", "Private room"];
-var curDistrict = 0;
-var chooseDistrict = ["Downtown", "Fangshan", "Daxing", "Tongzhou", "Mentougou", "Changping","Shunyi",
-                      "Pinggu", "Yanqing", "Huairou", "Miyun"];
+var curDistrict = -1;
+var chooseDistrict = ["Dongcheng", "Xicheng", "Chaoyang", "Haidian", "Shijingshan", "Fengtai"];
 var curNumOfBed = 0;
 var numberofBedroom = ["0","1","2","3","4+"];
 var curNumOfBath = 0;
@@ -3656,7 +3743,8 @@ var chooseRoomTypeRight = d3.select("#rightButton1")
                   //chooseRoomType[0] = "Entired house/apt"
                   //chooseRoomType[1] = 'Private Room'
                   d3.select("#selectedRoomType").text(chooseRoomType[curRoomType]);
-                   updatepie()
+                   updatepie();
+                   filterPiePrices();
                   // updatemap()
               });
 
@@ -3674,7 +3762,8 @@ var chooseRoomTypeRight = d3.select("#leftButton1")
                 console.log("RoomType Add" + curRoomType);
                 } else { console.log("No");}
                 d3.select("#selectedRoomType").text(chooseRoomType[curRoomType]);
-                updatepie()
+                updatepie();
+                filterPiePrices();
                 // updatemap()
                 });
 
@@ -3692,7 +3781,8 @@ var chooseDistrictRight = d3.select("#rightButton2")
                   console.log("District Add" + curDistrict);
                 } else { console.log("No");}
                   d3.select("#selectedDistrict").text(chooseDistrict[curDistrict]);
-                  updatepie()
+                  updatepie();
+                  filterPiePrices();
                   // updatemap()
               });
 
@@ -3710,7 +3800,8 @@ var chooseDistrictRight = d3.select("#leftButton2")
                   console.log("District Add" + curDistrict);
                 } else { console.log("No");}
                   d3.select("#selectedDistrict").text(chooseDistrict[curDistrict]);
-                  updatepie()
+                  updatepie();
+                  filterPiePrices();
                   // updatemap()
               });
 
@@ -3728,7 +3819,8 @@ var NumOfBedRight = d3.select("#rightButton3")
                   console.log("NumofBedroom Add" + curNumOfBed);
                 } else { console.log("No");}
                   d3.select("#selectedNumofBed").text(numberofBedroom[curNumOfBed]);
-                  updatepie()
+                  updatepie();
+                  filterPiePrices();
                   // updatemap()
               });
 
@@ -3746,7 +3838,8 @@ var NumOfBedRight = d3.select("#leftButton3")
                   console.log("NumofBedroom Add" + curNumOfBed);
                 } else { console.log("No");}
                   d3.select("#selectedNumofBed").text(numberofBedroom[curNumOfBed]);
-                  updatepie()
+                  updatepie();
+                  filterPiePrices();
                   // updatemap()
               });
 
@@ -3765,7 +3858,8 @@ var NumOfBathRight = d3.select("#rightButton4")
                   console.log("NumofBathroom Add" + curNumOfBath);
                 } else { console.log("No");}
                   d3.select("#selectedNumofBath").text(numberofBathroom[curNumOfBath]);
-                  updatepie()
+                  updatepie();
+                  filterPiePrices();
                   // updatemap()
               });
 
@@ -3783,43 +3877,15 @@ var NumOfBathRight = d3.select("#leftButton4")
                   console.log("NumofBathroom Add" + curNumOfBath);
                 } else { console.log("No");}
                   d3.select("#selectedNumofBath").text(numberofBathroom[curNumOfBath]);
-                  updatepie()
+                  updatepie();
+                  filterPiePrices();
                   // updatemap()
               });
 
-
-
-              //call current District
-
-
-
-
-// var curDistrict = 0;
-// var chooseDistrict = ["Downtown", "Fangshan", "Daxing", "Tongzhou", "Mentougou", "Changping","Shunyi",
-//                       "Pinggu", "Yanqing", "Huairou", "Miyun"];
-//
-//  chooseDistrict[3] = "Tongzhou"
-//  if(curDistrict === 3){
-//    d3.select("beijingmap.json", function(error, data){
-//
-//    })
-//  }
-
-
-
-
-              // //chooseDistrict[3] = "Tongzhou"
-              // if(curDistrict === 3){
-              //   d3.select(#Tongzhou).color();
-              // }
-// orignal data name should match with map data name
-// text replace text for selectionbar; create other text lines
-
-
-
 </script>
-
+</div>
 <!--Third arrow-->
+<div class="selectionbar2">
 <svg class="arrow3" width="7%" height="7%" viewBox="7 800 88.5 100">
 <g>
 	<path id="thirdarrow" fill="#BCBCBC" d="M50.555,862.95c8.184-7.607,15.887-14.826,23.664-21.977c4.562-4.193,8.658-4.141,13.188-0.002
@@ -3829,90 +3895,217 @@ var NumOfBathRight = d3.select("#leftButton4")
 </g>
 </svg>
 </div>
+<svg id="pieChart" class="pie" height=672 width=1000></svg>
 
 <script type="text/javascript">
 
 var arrowdown = d3.select("#thirdarrow")
     arrowdown.on("mouseover", function(d){
-      d3.select(this).attr("fill", "grey");
+      d3.select(this).attr("fill", "#F05B61");
     })
     .on("mouseout", function(d){
-      d3.select(this).attr("fill", "pink");
+      d3.select(this).attr("fill", "grey");
     })
     .on("click", function(d){
-      d3.select(this).attr("fill", "white");
+      d3.select(this).attr("fill", "#F05B61");
       console.log(window.innerHeight)
       window.scrollTo(0,window.innerHeight*3)
     });
 
 </script>
-
 <!-- pie chart -->
-<div id="option">
-  <input name="DistrictPrices"
-         type="button"
-         value="PRICES"
-         onclick="updateData()" />
- <input name="DistrictRate"
-          type="button"
-          value="OVERALL SATISFACTION"
-          onclick="updateData2()" />
-</div>
-
 
 <script>
 //Filter by bedrooms
 function bedRoomFilter(d){
   if(curNumOfBed === 1){
-    return d.bedrooms === "1.0"
+    return d.bedrooms === "1"
   } else if (curNumOfBed === 2){
-    return d.bedrooms === "2.0"
+    return d.bedrooms === "2"
   } else if (curNumOfBed === 3){
-    return d.bedrooms === "3.0"
+    return d.bedrooms === "3"
   } else if (curNumOfBed === 4){
-    return d.bedrooms != "1.0" && d.bedrooms !="2.0" && d.bedrooms !="3.0" && d.bedrooms !="0.0" && d.bedrooms !=""
+    return d.bedrooms != "1" && d.bedrooms !="2" && d.bedrooms !="3" && d.bedrooms !="0" && d.bedrooms !=""
   }
 };
-
+//Filter by bathrooms
 function bathRoomFilter(d){
   if(curNumOfBath === 1){
-    return d.bathrooms === "1.0"
+    return d.bathrooms === "1"
   } else if (curNumOfBath === 2){
-    return d.bathrooms === "2.0"
+    return d.bathrooms === "2"
   } else if (curNumOfBath === 3){
-    return d.bathrooms === "3.0"
+    return d.bathrooms === "3"
   } else if (curNumOfBath === 4){
-    return d.bathrooms != "1.0" && d.bathrooms !="2.0" && d.bathrooms !="3.0" && d.bathrooms !="0.0" && d.bathrooms !=""
+    return d.bathrooms != "1" && d.bathrooms !="2" && d.bathrooms !="3" && d.bathrooms !="0" && d.bathrooms !=""
+  }
+};
+//Filter by district ["Dongcheng", "Xicheng", "Chaoyang", "Haidian", "Shijingshan", "Fengtai"]
+function districtFilter(d){
+  if(curDistrict === 0){
+    return d.District === "dongcheng"
+  } else if (curDistrict === 1){
+    return d.District === "xicheng"
+  } else if (curDistrict === 2){
+    return d.District === "chaoyang"
+  } else if (curDistrict === 3){
+    return d.District === "haidian"
+  } else if (curDistrict === 4){
+    return d.District === "shijingshan"
+  } else if (curDistrict === 5){
+    return d.District === "fengtai"
   }
 };
 
-var myPieChartData
+var myPieChartData;
 function updatepie(){
   // console.log(prices)
-  var myPieChartData =
+  myPieChartData =
   prices.filter(function(d){
-    return d.room_type == chooseRoomType[curRoomType] &&
-           bedRoomFilter(d) && bathRoomFilter(d);
+    return d.room_type == chooseRoomType[curRoomType]&&
+          bedRoomFilter(d)  && bathRoomFilter(d) && districtFilter(d) ;
           //  d.bathrooms == numberofBathroom[curNumOfBath]
   })
- console.log(piefilterdata)
+ console.log(myPieChartData.length + '    Room in choosen area')
 };
 
-
-
-
+//
 // var width = 960,
 //     height = 500;
 //
-// var color = d3.scale.ordinal()
-//     .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-//
 // var pie = d3.layout.pie()
-//     .value(function(d) {
+//     .value(function(myPieChartData) {
 //       return d.price;
 //     });
 //
-// data = pie(data);
+// data = pie(myPieChartData.price);
+var finalPieChartData
+function filterPiePrices(){
+pieData1 = myPieChartData.filter(function(d) {
+  return d.price <= 20;
+});
+
+pieData1 = {
+  "length": pieData1.length,
+  "text": "< $21",
+  "color": "#55C6D9"
+}
+
+pieData2 = myPieChartData.filter(function(d) {
+  return d.price > 20 && d.price <= 30;
+});
+
+pieData2 = {
+  "length": pieData2.length,
+  "text": "$21 ~ $30",
+  "color": "D5DE24"
+}
+
+pieData3 = myPieChartData.filter(function(d){
+  return d.price > 30 && d.price <= 40;
+});
+
+pieData3 = {
+  "length": pieData3.length,
+  "text": "$31 ~ $40",
+  "color": "#BFAAD2"
+}
+
+pieData4 = myPieChartData.filter(function(d){
+  return d.price > 40 && d.price <= 50;
+});
+
+pieData4 = {
+  "length": pieData4.length,
+  "text": "$41 ~ $50",
+  "color": "#FFDD17"
+}
+
+pieData5 = myPieChartData.filter(function(d){
+  return d.price > 50 && d.price <= 70;
+});
+
+pieData5 = {
+  "length": pieData5.length,
+  "text": "$51 ~ $70",
+  "color": "#F79848"
+}
+
+pieData6 = myPieChartData.filter(function(d){
+  return d.price > 70 && d.price <= 100;
+});
+
+pieData6 = {
+  "length": pieData6.length,
+  "text": "$71 ~ $100",
+  "color": "#F286B6"
+}
+
+pieData7 = myPieChartData.filter(function(d){
+  return d.price > 100;
+});
+
+pieData7 = {
+  "length": pieData7.length,
+  "text": "> $101",
+  "color": "#E77868"
+}
+
+finalPieChartData = [pieData1, pieData2, pieData3, pieData4, pieData5, pieData6, pieData7];
+console.log(finalPieChartData);
+var pie = d3.layout.pie()
+  .value(function(d){
+    return d.length;
+  });
+
+data = pie(finalPieChartData);
+
+  var arc = d3.svg.arc()
+    .innerRadius(200) //donuts chart change the number
+    .outerRadius(300)
+
+  var slices = d3.select("#pieChart").selectAll("path").remove()
+  var slices = d3.select("#pieChart").selectAll("path")
+      .data(data);
+
+  slices.enter().append("path")
+        .attr("transform", "translate(300, 300)")
+        .attr("id", function(d,i) { return "priceArc_"+i; })
+        .style("fill", function(d){
+          return d.data.color;
+        })
+        .attr("d", arc);
+
+ slices.append("text")
+ 			 .attr("tansform", function (d) { return "translate (" + arc.centroid(d) + ")";  })
+			 .text (function (d) { return d.data.length; });
+
+        //Show data
+        //option 1
+        // text(function(d）{
+        //   return d.length + "\n " + d.text
+        // })
+
+
+        //plan b
+        // for(var i = 0; i < myPieChartData.length; i++){
+        //   <svg x = "700", 'y' = i * 30  + 50 >
+        //   img src=
+        //
+        //   <text> myPieChartData[i].length </text>
+        //   <text> myPieChartData[i].text </text>
+        //
+        //   </svg>
+        // }
+
+      if(myPieChartData.length == 0 && curRoomType > -1 && curDistrict > -1 && curNumOfBed > 0 && curNumOfBath > 0){
+
+          alert("Oops! No Room In Selection!");
+
+        }
+
+}
+
 //
 //
 // var arc = d3.svg.arc()
@@ -3928,43 +4121,6 @@ function updatepie(){
 //             return d.data.color;
 //           })
 //           .attr("d", arc);
-//
-// d3.csv("http://liangfanghui.github.io/project/airbnbbeijing.csv", function (error, data) {
-//       prices = data.sort(function(a, b) {
-//         return b.price - a.price
-//         })
-//
-//      pricesOne = data.filter(function(d) {
-//         return d.price <= 20;
-//        });
-//
-//        pricesTwo = data.filter(function(d) {
-//          return d.price > 20 && d.price <= 30;
-//        });
-//
-//
-//        pricesThree = data.filter(function(d){
-//          return d.price > 30 && d.price <= 40;
-//        });
-//
-//
-//        pricesFour = data.filter(function(d){
-//          return d.price > 40 && d.price <= 50;
-//        });
-//
-//        pricesFive = data.filter(function(d){
-//          return d.price > 50 && d.price <= 70;
-//        });
-//
-//
-//        pricesSix = data.filter(function(d){
-//          return d.price > 70 && d.price <= 100;
-//        });
-//
-//
-//        pricesSeven = data.filter(function(d){
-//          return d.price > 100;
-//
 //
 //       var g = svg.selectAll(".arc")
 //                   .data(pie(data))
@@ -4009,7 +4165,7 @@ function drawPoints(data){
     var  points = {
       id : prices[x].room_id,
       price : prices[x].price,
-      coords : [prices[x].longitude, prices[x].latitude]
+      coords : [parseFloat(prices[x].longitude), parseFloat(prices[x].latitude)]
     }
     pointsDataSet.push(points);
   }
@@ -4022,7 +4178,7 @@ function drawPoints(data){
   // console.log(points.coords);
   // console.log(globalProj(points.coords));
   var points = svg.selectAll("circle")
-  .data(points, function(d){
+  .data(pointsDataSet, function(d){
     return d.name;
   });
 
@@ -4048,9 +4204,6 @@ var path = d3.geo.path()
 var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height);
-
-var globalProj;
-var globalPath;
 
 var featureCollection;
   d3.json("beijingmap.json", function (error, data) {
@@ -4080,6 +4233,9 @@ console.log(featureCollection);
       .scale(scale).translate(offset);
     path = path.projection(proj);
 
+		var globalProj;
+		var globalPath;
+
     var paths = svg.selectAll("path")
         .data(featureCollection.features, function(d){
           return d.id;
@@ -4088,11 +4244,6 @@ console.log(featureCollection);
     paths.enter().append("path")
       .attr("d", path).attr("fill", "white");
 
-  //   if (error) return console.error(error);
-  //
-  //   svg.append("path")
-  //      .datum(topojson)
-  //      .attr("d", path);
 
   });
 </script>

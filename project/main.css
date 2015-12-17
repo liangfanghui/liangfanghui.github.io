@@ -1,5 +1,22 @@
-div{
-    margin:20px;
+/* popupwindown */
+
+#popupBoxOnePosition{
+				top: 0; left: 0; position: fixed; width: 100%; height: 100%;
+				background-color: rgba(0,0,0,0.7); display: none;
+			}
+#popupBoxTwoPosition{
+				top: 0; left: 0; position: fixed; width: 100%; height: 100%;
+				background-color: rgba(0,0,0,0.7); display: none;
+      }
+.popupBoxWrapper{
+    width: 60%; margin: 10px auto; text-align: left;
+}
+.popupBoxContent{
+    background-color: white;padding: 10px;
+}
+
+.infomap1{
+  color: red;
 }
 
 .fullscreen{
@@ -29,14 +46,14 @@ div{
 
 .chart div{
   font: 12px Gill Sans;
-  background-color: White;
-  text-align: left;
+  background-color: #F05B61;
+  text-align: right;
   padding: 18px;
   margin: 10px;
-  color: #202020;
+  color: white;
 }
 .chart:hover div{
-  color: orangered;
+  color: white;
 }
 
 .d3-tip {
@@ -66,6 +83,10 @@ div{
   margin: -1px 0 0 0;
   top: 100%;
   left: 0;
+}
+
+#infomap{
+  cursor: pointer;
 }
 
 #rightButton1{
@@ -129,3 +150,20 @@ div{
 		text-decoration: none;
     font-size: 15px;
 	}
+.barchartoption{
+  padding-top: 50px;
+}
+
+#pieChart{
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+
+.selectionbar1{
+  margin-top: 100px;
+}
+.selectionbar2{
+  margin-bottom: 100px;
+}
