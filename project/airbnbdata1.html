@@ -3916,9 +3916,11 @@ var NumOfBathRight = d3.select("#leftButton4")
 
 <div class="fullscreen">
 
-<svg id="pieChart" class="pie" height=672 width=600>
-		<img src ="img/pricerange.svg" width="20%" align="right"/>
-</svg>
+	<div class="pie-number"></div>
+
+	<svg id="pieChart" class="pie" height=672 width=600>
+			<img src ="img/pricerange.svg" width="20%" align="right"/>
+	</svg>
 
 <script type="text/javascript">
 
@@ -4098,6 +4100,13 @@ data = pie(finalPieChartData);
           return d.data.color;
         })
         .attr("d", arc);
+
+			 slices.on("mouseover", function(d){
+				 d3.select(".pie-number").text(d.data.length);
+			 })
+			 .on("mouseout", function(d){
+			d3.select(".pie-number").text("");
+			});;
 
  slices.append("text")
  			 .attr("tansform", function (d) { return "translate (" + arc.centroid(d) + ")";  })
